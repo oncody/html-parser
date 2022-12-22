@@ -1,7 +1,8 @@
-import StringParser from '../regex/string-parser.js';
 import HtmlElementRegex from './html-element-regex.js';
 import MatchType from './match-type.js';
 import HtmlElementType from "./html-element-type.js";
+
+import StringParser from 'oncody-regex/src/string-parser.js';
 
 // This class helps to parse an element from an html string
 export default class HtmlParser {

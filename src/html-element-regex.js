@@ -1,5 +1,5 @@
-import RegexBuilder from '../regex/regex-builder.js';
-import RegexFlag from '../regex/regex-flag.js';
+import RegexBuilder from 'oncody-regex/src/regex-builder.js';
+import RegexFlag from 'oncody-regex/src/regex-flag.js';
 import HtmlAttribute from './html-attribute.js';
 
 // This class builds the regex to parse an HTML element opening tag
