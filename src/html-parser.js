@@ -1,8 +1,6 @@
-import HtmlElementRegex from './html-element-regex.js';
-import MatchType from './match-type.js';
-import HtmlElementType from "./html-element-type.js";
-
-import StringParser from 'oncody-regex/src/string-parser.js';
+import HtmlRegex from './html-regex.js';
+import HtmlElementType from "./html/enum/html-element-type.js";
+import HtmlAttribute from "./html/enum/html-attribute.js";
 
 // This class helps to parse an element from an html string
 export default class HtmlParser {
@@ -12,75 +10,41 @@ export default class HtmlParser {
         this._substring = html;
     }
 
-    parseElement(elementType, matchType) {
-        let elementRegex = new HtmlElementRegex(elementType);
-
-        switch (matchType) {
-            case MatchType.FIRST_MATCH:
-                return this._firstMatch(elementRegex);
-            case MatchType.ALL_MATCHES:
-                return this._allMatches(elementRegex);
-        }
-
-        return null;
+    lookupElement(elementType) {
+        let regex = new HtmlRegex(elementType);
+        let match = regex.firstMatch(this._substring);
+        this.advanceCursor(match.endPosition());
+        return match;
     }
 
-    parseElementByAttribute(elementType, htmlAttribute, attributeValue, matchType) {
-        let elementRegex = new HtmlElementRegex(elementType);
-        elementRegex.byAttribute(htmlAttribute, attributeValue);
-
-        switch (matchType) {
-            case MatchType.FIRST_MATCH:
-                return this._firstMatch(elementRegex);
-            case MatchType.ALL_MATCHES:
-                return this._allMatches(elementRegex);
-        }
-
-        return null;
+    lookupElementById(elementType, id) {
+        let regex = new HtmlRegex(elementType);
+        let match = regex.byAttribute(HtmlAttribute.ID, id).firstMatch(this._substring);
+        this.advanceCursor(match.endPosition());
+        return match;
     }
 
-    parseTableRows() {
+    lookupElements(elementType) {
+        let regex = new HtmlRegex(elementType);
+        let matches = regex.allMatches(this._substring);
+        let lastMatch = matches[matches.length - 1];
+        this.advanceCursor(lastMatch.endPosition());
+        return matches;
+    }
+
+    lookupTableRows() {
         // Find the next table
-        let table = this.parseElement(HtmlElementType.TABLE, MatchType.FIRST_MATCH);
+        let table = this.lookupElement(HtmlElementType.TABLE);
 
         // Get the rows from the table
         let tableTraverser = new HtmlParser(table.text());
-        return tableTraverser.parseElement(HtmlElementType.TABLE_ROW, MatchType.ALL_MATCHES);
+        return tableTraverser.lookupElements(HtmlElementType.TABLE_ROW);
     }
 
-    // This one will not work if there is a nested element
-    _firstMatch(htmlElementRegex) {
-        // find the opening tag
-        let openingTagMatch = htmlElementRegex.regex().firstMatch(this._substring)
-
-        // grab all text between the opening tag and the closing tag
-        let stringParser = new StringParser(this._substring);
-        let elementMatch = stringParser.matchBetweenTwoStrings(openingTagMatch.text(), htmlElementRegex.elementType().closingTag());
-
-        this.advanceCursor(elementMatch.endPosition());
-
-        return elementMatch;
-    }
-
-    _allMatches(htmlElementRegex) {
-        let matches = htmlElementRegex.regex().allMatches(this._html);
-        let lastMatch = null;
-
-        let matchesTransformed = matches.map(match => {
-            // console.log(match);
-            let stringParser = new StringParser(this._html.substring(match.startPosition()));
-            let fullMatch = stringParser.matchBetweenTwoStrings(match.text(), htmlElementRegex.elementType().closingTag());
-            lastMatch = fullMatch;
-            return fullMatch;
-        });
-
-        this.advanceCursor(lastMatch.endPosition());
-
-        return matchesTransformed;
-    }
 
     resetPosition() {
         this._cursor = 0;
+        this._substring = this._html;
     }
 
     advanceCursor(position) {
