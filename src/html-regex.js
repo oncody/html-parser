@@ -3,19 +3,22 @@ import RegexFlag from 'oncody-regex/src/regex-flag.js';
 import StringParser from "oncody-regex/src/string-parser.js";
 
 // This class builds the regex to parse an HTML element opening tag
+// TODO: split this class into two separate classes
 export default class HtmlRegex {
     constructor(elementType) {
         let regexBuilder = new RegexBuilder();
         this._elementType = elementType;
+
+        // TODO: Optionally only use global flag if looking for more than one match
         this._regex = regexBuilder.text(this._elementType.openingTag())
             .characterNotInString('>')
             .repeatZeroOrMoreTimes()
             .text('>')
-            .addFlag(RegexFlag.MULTILINE)
             .addFlag(RegexFlag.GLOBAL)
             .build();
     }
 
+    // TODO: Optionally only use global flag if looking for more than one match
     byAttribute(htmlAttribute, attributeValue) {
         let regexBuilder = new RegexBuilder();
         this._regex = regexBuilder.text(this._elementType.openingTag())
@@ -32,7 +35,6 @@ export default class HtmlRegex {
             .characterNotInString('>')
             .repeatZeroOrMoreTimes()
             .text('>')
-            .addFlag(RegexFlag.MULTILINE)
             .addFlag(RegexFlag.GLOBAL)
             .build();
 

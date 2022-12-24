@@ -28,4 +28,19 @@ export default class HtmlElement {
     text() {
         return this._text;
     }
+
+    // An array of all classes
+    classes() {
+
+    }
+
+    // Key-Value pair of attribute names and their values
+    attributes() {
+
+    }
+
+    // A list of all nested sub elements
+    subElements() {
+
+    }
 }
