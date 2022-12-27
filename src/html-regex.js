@@ -11,7 +11,7 @@ export default class HtmlRegex {
 
         this._regex = regexBuilder.match(this._elementType.openingTag())
             .matchSingleCharacterOutside('>')
-            .anyNumberOfTimes()
+            .anyNumberOfTimesGreedy()
             .match('>')
             .build();
     }
@@ -20,20 +20,20 @@ export default class HtmlRegex {
         let regexBuilder = new RegexBuilder();
         this._regex = regexBuilder.match(this._elementType.openingTag())
             .match(RegexCharacter.WHITESPACE)
-            .atLeastOnce()
+            .atLeastOnceGreedy()
             .matchSingleCharacterOutside('>')
-            .anyNumberOfTimes()
+            .anyNumberOfTimesGreedy()
             .match(htmlAttribute.name())
             .match(RegexCharacter.WHITESPACE)
-            .anyNumberOfTimes()
+            .anyNumberOfTimesGreedy()
             .match('=')
             .match(RegexCharacter.WHITESPACE)
-            .anyNumberOfTimes()
+            .anyNumberOfTimesGreedy()
             .matchSingleCharacterInside('\'"')
             .match(attributeValue)
             .matchSingleCharacterInside('\'"')
             .matchSingleCharacterOutside('>')
-            .anyNumberOfTimes()
+            .anyNumberOfTimesGreedy()
             .match('>')
             .build();
 
