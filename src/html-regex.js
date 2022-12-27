@@ -1,8 +1,6 @@
 import RegexBuilder from 'oncody-regex/src/regex-builder.js';
-import RegexFlag from 'oncody-regex/src/regex-flag.js';
 import StringParser from "oncody-regex/src/string-parser.js";
 import RegexCharacter from "oncody-regex/src/regex-character.js";
-import RegexFrequency from "oncody-regex/src/regex-frequency.js";
 
 // This class builds the regex to parse an HTML element opening tag
 // TODO: split this class into two separate classes
@@ -11,27 +9,32 @@ export default class HtmlRegex {
         let regexBuilder = new RegexBuilder();
         this._elementType = elementType;
 
-        this._regex = regexBuilder.add(this._elementType.openingTag())
-            .add(regexBuilder.characterNotIn('>'))
-            .add(RegexFrequency.ANY_NUMBER_OF_TIMES)
-            .add('>')
+        this._regex = regexBuilder.match(this._elementType.openingTag())
+            .matchSingleCharacterOutside('>')
+            .anyNumberOfTimes()
+            .match('>')
             .build();
     }
 
     byAttribute(htmlAttribute, attributeValue) {
         let regexBuilder = new RegexBuilder();
-        this._regex = regexBuilder.add(this._elementType.openingTag())
-            .add(regexBuilder.mandatoryWhitespace())
-            .add(regexBuilder.characterNotIn('>'))
-            .add(RegexFrequency.ANY_NUMBER_OF_TIMES)
-            .add(htmlAttribute.name())
-            .add(regexBuilder.optionalWhitespace())
-            .add('=')
-            .add(regexBuilder.optionalWhitespace())
-            .add(regexBuilder.quotedText(attributeValue))
-            .add(regexBuilder.characterNotIn('>'))
-            .add(RegexFrequency.ANY_NUMBER_OF_TIMES)
-            .add('>')
+        this._regex = regexBuilder.match(this._elementType.openingTag())
+            .match(RegexCharacter.WHITESPACE)
+            .atLeastOnce()
+            .matchSingleCharacterOutside('>')
+            .anyNumberOfTimes()
+            .match(htmlAttribute.name())
+            .match(RegexCharacter.WHITESPACE)
+            .anyNumberOfTimes()
+            .match('=')
+            .match(RegexCharacter.WHITESPACE)
+            .anyNumberOfTimes()
+            .matchSingleCharacterInside('\'"')
+            .match(attributeValue)
+            .matchSingleCharacterInside('\'"')
+            .matchSingleCharacterOutside('>')
+            .anyNumberOfTimes()
+            .match('>')
             .build();
 
         return this;
