@@ -3,41 +3,15 @@ import StringParser from "oncody-regex/src/string-parser.js";
 import RegexCharacter from "oncody-regex/src/regex-character.js";
 
 // This class builds the regex to parse an HTML element opening tag
-// TODO: split this class into two separate classes
-export default class HtmlRegex {
+export default class HtmlElementRegex {
     constructor(elementType) {
-        let regexBuilder = new RegexBuilder();
         this._elementType = elementType;
-
-        this._regex = regexBuilder.match(this._elementType.openingTag())
+        this._regex = new RegexBuilder()
+            .match(this._elementType.openingTag())
             .matchSingleCharacterOutside('>')
             .anyNumberOfTimesGreedy()
             .match('>')
             .build();
-    }
-
-    byAttribute(htmlAttribute, attributeValue) {
-        let regexBuilder = new RegexBuilder();
-        this._regex = regexBuilder.match(this._elementType.openingTag())
-            .match(RegexCharacter.WHITESPACE)
-            .atLeastOnceGreedy()
-            .matchSingleCharacterOutside('>')
-            .anyNumberOfTimesGreedy()
-            .match(htmlAttribute.name())
-            .match(RegexCharacter.WHITESPACE)
-            .anyNumberOfTimesGreedy()
-            .match('=')
-            .match(RegexCharacter.WHITESPACE)
-            .anyNumberOfTimesGreedy()
-            .matchSingleCharacterInside('\'"')
-            .match(attributeValue)
-            .matchSingleCharacterInside('\'"')
-            .matchSingleCharacterOutside('>')
-            .anyNumberOfTimesGreedy()
-            .match('>')
-            .build();
-
-        return this;
     }
 
     // This one will not work if there is a nested element

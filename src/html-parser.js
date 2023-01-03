@@ -1,6 +1,7 @@
-import HtmlRegex from './html-regex.js';
+import HtmlElementRegex from './html-element-regex.js';
 import HtmlElementType from "./html/enum/html-element-type.js";
 import HtmlAttribute from "./html/enum/html-attribute.js";
+import HtmlElementByAttributeRegex from "./html-element-by-attribute-regex.js";
 
 // This class helps to parse an element from an html string
 export default class HtmlParser {
@@ -11,21 +12,21 @@ export default class HtmlParser {
     }
 
     lookupElement(elementType) {
-        let regex = new HtmlRegex(elementType);
+        let regex = new HtmlElementRegex(elementType);
         let match = regex.firstMatch(this._substring);
         this.advanceCursor(match.endPosition());
         return match;
     }
 
     lookupElementById(elementType, id) {
-        let regex = new HtmlRegex(elementType);
-        let match = regex.byAttribute(HtmlAttribute.ID, id).firstMatch(this._substring);
+        let regex = new HtmlElementByAttributeRegex(elementType, HtmlAttribute.ID.name(), id);
+        let match = regex.firstMatch(this._substring);
         this.advanceCursor(match.endPosition());
         return match;
     }
 
     lookupElements(elementType) {
-        let regex = new HtmlRegex(elementType);
+        let regex = new HtmlElementRegex(elementType);
         let matches = regex.allMatches(this._substring);
         let lastMatch = matches[matches.length - 1];
         this.advanceCursor(lastMatch.endPosition());
