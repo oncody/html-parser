@@ -2,6 +2,8 @@ import HtmlElementRegex from './html-element-regex.js';
 import HtmlElementType from "./html/enum/html-element-type.js";
 import HtmlAttribute from "./html/enum/html-attribute.js";
 import HtmlElementByAttributeRegex from "./html-element-by-attribute-regex.js";
+import RegexBuilder from "oncody-regex/src/regex-builder.js";
+import RegexCharacter from "oncody-regex/src/regex-character.js";
 
 // This class helps to parse an element from an html string
 export default class HtmlParser {
@@ -76,6 +78,24 @@ export default class HtmlParser {
         // Get the rows from the table
         let tableTraverser = new HtmlParser(table.text());
         return tableTraverser.lookupElements(HtmlElementType.TABLE_ROW);
+    }
+
+    /**
+     * Returns a new HTML Parser
+     * @returns {HtmlParser}
+     */
+    innerText() {
+        let regex = new RegexBuilder()
+            .match('>')
+            .startCapturing()
+            .match(RegexCharacter.WILDCARD.toString())
+            .anyNumberOfTimesLazy()
+            .match('<\/')
+            .build();
+
+        let match = regex.firstMatch(this._unreadText);
+        this.advanceCursor(match.endPosition());
+        return new HtmlParser(match.text());
     }
 
     /**
