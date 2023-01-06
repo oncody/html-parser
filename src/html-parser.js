@@ -55,19 +55,19 @@ export default class HtmlParser {
     /**
      * Returns an array of new HTML Parsers
      * @param {HtmlElementType} elementType
-     * @returns [{HtmlParser}]
+     * @returns {HtmlParser[]}
      */
     lookupElements(elementType) {
         let regex = new HtmlElementRegex(elementType);
         let matches = regex.allMatches(this._unreadText);
         let lastMatch = matches[matches.length - 1];
         this.advanceCursor(lastMatch.endPosition());
-        return matches;
+        return matches.map(match => new HtmlParser(match.text()));
     }
 
     /**
      * Returns a new HTML Parser
-     * @returns [{HtmlParser}]
+     * @returns {HtmlParser[]}
      */
     lookupTableRows() {
         // Find the next table

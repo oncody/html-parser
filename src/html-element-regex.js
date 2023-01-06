@@ -37,7 +37,7 @@ export default class HtmlElementRegex {
     /**
      * This will not work if there is a nested element
      * @param {string} text
-     * @returns [{Match}]
+     * @returns {Match[]}
      */
     allMatches(text) {
         let matches = this._regex.allMatches(text);
