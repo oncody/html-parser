@@ -1,9 +1,15 @@
 import RegexBuilder from 'oncody-regex/src/regex-builder.js';
 import StringParser from "oncody-regex/src/string-parser.js";
 import RegexCharacter from "oncody-regex/src/regex-character.js";
+import Match from "oncody-regex/src/match.js"
 
 // This class builds the regex to parse an HTML element opening tag
 export default class HtmlElementRegex {
+
+    /**
+     * @param {HtmlElementType} elementType
+     * @returns {HtmlElementRegex}
+     */
     constructor(elementType) {
         this._elementType = elementType;
         this._regex = new RegexBuilder()
@@ -14,7 +20,11 @@ export default class HtmlElementRegex {
             .build();
     }
 
-    // This one will not work if there is a nested element
+    /**
+     * This will not work if there is a nested element
+     * @param {string} text
+     * @returns {Match}
+     */
     firstMatch(text) {
         // find the opening tag
         let openingTagMatch = this._regex.firstMatch(text)
@@ -24,6 +34,11 @@ export default class HtmlElementRegex {
         return stringParser.matchBetweenTwoStrings(openingTagMatch.text(), this._elementType.closingTag());
     }
 
+    /**
+     * This will not work if there is a nested element
+     * @param {string} text
+     * @returns [{Match}]
+     */
     allMatches(text) {
         let matches = this._regex.allMatches(text);
 

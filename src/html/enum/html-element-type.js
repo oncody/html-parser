@@ -34,18 +34,31 @@ export default class HtmlElementType {
     static H5 = new HtmlElementType('h5');
     static H6 = new HtmlElementType('h6');
 
+    /**
+     * @param {string} tagName
+     * @returns {HtmlElementType}
+     */
     constructor(tagName) {
         this._tagName = tagName;
     }
 
+    /**
+     * @returns {string}
+     */
     openingTag() {
         return `<${this.toString()}`;
     }
 
+    /**
+     * @returns {string}
+     */
     closingTag() {
         return `</${this.toString()}>`;
     }
 
+    /**
+     * @returns {string}
+     */
     toString() {
         return this._tagName;
     }

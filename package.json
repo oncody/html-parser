@@ -1,6 +1,6 @@
 {
   "name": "oncody-web-scraper",
-  "version": "1.0.23",
+  "version": "1.0.25",
   "description": "oncody web scraper",
   "main": "index.js",
   "type": "module",
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/oncody/oncody-web-scraper.git"
   },
   "dependencies": {
-    "oncody-regex": "1.0.15"
+    "oncody-regex": "1.0.16"
   },
   "keywords": [],
   "author": "Cody Smith",
