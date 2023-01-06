@@ -90,6 +90,7 @@ export default class HtmlParser {
             .startCapturing()
             .match(RegexCharacter.WILDCARD.toString())
             .anyNumberOfTimesLazy()
+            .stopCapturing()
             .match('<\/')
             .build();
 
