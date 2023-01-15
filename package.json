@@ -1,7 +1,7 @@
 {
-  "name": "@oncody/scraper",
-  "version": "1.0.29",
-  "description": "oncody web scraper",
+  "name": "@oncody/html-parser",
+  "version": "1.0.0",
+  "description": "html parser",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -9,19 +9,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oncody/oncody-web-scraper.git"
+    "url": "git+https://github.com/oncody/html-parser.git"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@oncody/regex": "1.0.20"
+    "@oncody/regex": "1.0.1"
   },
   "keywords": [],
   "author": "Cody Smith",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/oncody/oncody-web-scraper/issues"
-  },
-  "homepage": "https://github.com/oncody/oncody-web-scraper#readme"
+  "homepage": "https://github.com/oncody/html-parser#readme"
 }
