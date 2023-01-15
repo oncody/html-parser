@@ -1,14 +1,14 @@
-
-// This class represents an html element
-export default class HtmlElement {
-
+/**
+ * This class represents an html element
+ */
+class Element {
     /**
-     * @param {HtmlElementType} elementType
+     * @param {ElementType} elementType
      * @param {string} html
      * @param {number} indexStart
      * @param {number} indexEnd
      * @param {string} text
-     * @returns {HtmlElement}
+     * @returns {Element}
      */
     constructor(elementType, html, indexStart, indexEnd, text) {
         this._elementType = elementType;
@@ -19,7 +19,7 @@ export default class HtmlElement {
     }
 
     /**
-     * @returns {HtmlElementType}
+     * @returns {ElementType}
      */
     elementType() {
         return this._elementType;
@@ -68,3 +68,5 @@ export default class HtmlElement {
 
     }
 }
+
+export {Element}

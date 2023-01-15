@@ -1,10 +1,10 @@
-export default class HtmlAttribute {
-    static ID = new HtmlAttribute('id');
-    static CLASS = new HtmlAttribute('class');
+class Attribute {
+    static ID = new Attribute('id');
+    static CLASS = new Attribute('class');
 
     /**
      * @param {string} name
-     * @returns {HtmlAttribute}
+     * @returns {Attribute}
      */
     constructor(name) {
         this._name = name
@@ -24,3 +24,5 @@ export default class HtmlAttribute {
         return this._name;
     }
 }
+
+export {Attribute}

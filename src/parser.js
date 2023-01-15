@@ -1,16 +1,16 @@
-import HtmlElementRegex from './html-element-regex.js';
-import HtmlElementType from "./html/enum/html-element-type.js";
-import HtmlAttribute from "./html/enum/html-attribute.js";
-import HtmlElementByAttributeRegex from "./html-element-by-attribute-regex.js";
-import RegexBuilder from "oncody-regex/src/regex-builder.js";
-import RegexCharacter from "oncody-regex/src/regex-character.js";
+import {RegexBuilder, RegexCharacter} from "@oncody/regex";
+
+import {ElementRegex} from './regex/element-regex.js';
+import {ElementType} from "./data/element-type.js";
+import {Attribute} from "./data/attribute.js";
+import {ElementByAttributeRegex} from "./regex/element-by-attribute-regex.js";
 
 // This class helps to parse an element from an html string
-export default class HtmlParser {
+class Parser {
 
     /**
      * @param {string} text
-     * @returns {HtmlParser}
+     * @returns {Parser}
      */
     constructor(text) {
         this._text = text;
@@ -20,69 +20,69 @@ export default class HtmlParser {
 
     /**
      * Returns a new HTML Parser
-     * @param {HtmlElementType} elementType
-     * @returns {HtmlParser}
+     * @param {ElementType} elementType
+     * @returns {Parser}
      */
     lookupElement(elementType) {
-        let regex = new HtmlElementRegex(elementType);
+        let regex = new ElementRegex(elementType);
         let match = regex.firstMatch(this._unreadText);
         this.advanceCursor(match.endPosition());
-        return new HtmlParser(match.text());
+        return new Parser(match.text());
     }
 
     /**
      * Returns a new HTML Parser
-     * @param {HtmlElementType} elementType
+     * @param {ElementType} elementType
      * @param {string} attribute
      * @param {string} value
-     * @returns {HtmlParser}
+     * @returns {Parser}
      */
     lookupElementByAttribute(elementType, attribute, value) {
-        let regex = new HtmlElementByAttributeRegex(elementType, attribute, value);
+        let regex = new ElementByAttributeRegex(elementType, attribute, value);
         let match = regex.firstMatch(this._unreadText);
         this.advanceCursor(match.endPosition());
-        return new HtmlParser(match.text());
+        return new Parser(match.text());
     }
 
     /**
      * Returns a new HTML Parser
-     * @param {HtmlElementType} elementType
+     * @param {ElementType} elementType
      * @param {string} id
-     * @returns {HtmlParser}
+     * @returns {Parser}
      */
     lookupElementById(elementType, id) {
-        return this.lookupElementByAttribute(elementType, HtmlAttribute.ID.toString(), id);
+        return this.lookupElementByAttribute(elementType, Attribute.ID.toString(), id);
     }
 
     /**
      * Returns an array of new HTML Parsers
-     * @param {HtmlElementType} elementType
-     * @returns {HtmlParser[]}
+     * @param {ElementType} elementType
+     * @returns {Parser[]}
      */
     lookupElements(elementType) {
-        let regex = new HtmlElementRegex(elementType);
+        let regex = new ElementRegex(elementType);
         let matches = regex.allMatches(this._unreadText);
         let lastMatch = matches[matches.length - 1];
         this.advanceCursor(lastMatch.endPosition());
-        return matches.map(match => new HtmlParser(match.text()));
+        return matches.map(match => new Parser(match.text()));
     }
 
     /**
      * Returns a new HTML Parser
-     * @returns {HtmlParser[]}
+     * @returns {Parser[]}
      */
     lookupTableRows() {
         // Find the next table
-        let table = this.lookupElement(HtmlElementType.TABLE);
+        let table = this.lookupElement(ElementType.TABLE);
 
         // Get the rows from the table
-        let tableTraverser = new HtmlParser(table.text());
-        return tableTraverser.lookupElements(HtmlElementType.TABLE_ROW);
+        let tableTraverser = new Parser(table.text());
+        return tableTraverser.lookupElements(ElementType.TABLE_ROW);
     }
 
     /**
      * Returns a new HTML Parser
-     * @returns {HtmlParser}
+     * @returns {Parser}
      */
     innerText() {
         let regex = new RegexBuilder()
@@ -96,7 +96,7 @@ export default class HtmlParser {
 
         let match = regex.firstMatch(this._unreadText);
         this.advanceCursor(match.endPosition());
-        return new HtmlParser(match.text());
+        return new Parser(match.text());
     }
 
     /**
@@ -123,3 +123,5 @@ export default class HtmlParser {
     }
 
 }
+
+export {Parser}

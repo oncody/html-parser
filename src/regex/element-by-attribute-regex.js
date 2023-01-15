@@ -1,15 +1,15 @@
-import HtmlElementRegex from "./html-element-regex.js";
-import RegexBuilder from "oncody-regex/src/regex-builder.js";
-import RegexCharacter from "oncody-regex/src/regex-character.js";
+import {RegexBuilder, RegexCharacter} from "@oncody/regex";
+
+import {ElementRegex} from "./element-regex.js";
 
 // This class builds the regex to parse an HTML element opening tag
-export default class HtmlElementByAttributeRegex extends HtmlElementRegex {
+class ElementByAttributeRegex extends ElementRegex {
 
     /**
-     * @param {HtmlElementType} elementType
+     * @param {ElementType} elementType
      * @param {string} attribute
      * @param {string} value
-     * @returns {HtmlElementByAttributeRegex}
+     * @returns {ElementByAttributeRegex}
      */
     constructor(elementType, attribute, value) {
         super(elementType);
@@ -35,3 +35,5 @@ export default class HtmlElementByAttributeRegex extends HtmlElementRegex {
             .build();
     }
 }
+
+export {ElementByAttributeRegex}
