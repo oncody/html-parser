@@ -1,6 +1,6 @@
 {
   "name": "@oncody/scraper",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "description": "oncody web scraper",
   "main": "index.js",
   "type": "module",
@@ -15,7 +15,7 @@
     "access": "public"
   },
   "dependencies": {
-    "oncody-regex": "1.0.17"
+    "@oncody/regex": "1.0.20"
   },
   "keywords": [],
   "author": "Cody Smith",

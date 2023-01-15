@@ -1,7 +1,6 @@
-import RegexBuilder from 'oncody-regex/src/regex-builder.js';
-import StringParser from "oncody-regex/src/string-parser.js";
-import RegexCharacter from "oncody-regex/src/regex-character.js";
-import Match from "oncody-regex/src/match.js"
+import Regex from "@oncody/regex";
+
+let Match = Regex.Match();
 
 // This class builds the regex to parse an HTML element opening tag
 export default class HtmlElementRegex {
@@ -12,7 +11,7 @@ export default class HtmlElementRegex {
      */
     constructor(elementType) {
         this._elementType = elementType;
-        this._regex = new RegexBuilder()
+        this._regex = new Regex.Builder()
             .match(this._elementType.openingTag())
             .matchSingleCharacterOutside('>')
             .anyNumberOfTimesGreedy()
@@ -30,7 +29,7 @@ export default class HtmlElementRegex {
         let openingTagMatch = this._regex.firstMatch(text)
 
         // grab all text between the opening tag and the closing tag
-        let stringParser = new StringParser(text);
+        let stringParser = new Regex.StringParser(text);
         return stringParser.matchBetweenTwoStrings(openingTagMatch.text(), this._elementType.closingTag());
     }
 
@@ -42,13 +41,10 @@ export default class HtmlElementRegex {
     allMatches(text) {
         let matches = this._regex.allMatches(text);
 
-        let matchesTransformed = matches.map(match => {
+        return matches.map(match => {
             // console.log(match);
-            let stringParser = new StringParser(text.substring(match.startPosition()));
-            let fullMatch = stringParser.matchBetweenTwoStrings(match.text(), this._elementType.closingTag());
-            return fullMatch;
+            let stringParser = new Regex.StringParser(text.substring(match.startPosition()));
+            return stringParser.matchBetweenTwoStrings(match.text(), this._elementType.closingTag());
         });
-
-        return matchesTransformed;
     }
 }
